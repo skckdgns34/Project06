@@ -57,7 +57,7 @@ public class LoginController implements Initializable {
 		btn2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				SigninButtonAction(event);			
+				SignupButtonAction(event);			
 			}
 		});	
 				
@@ -116,23 +116,23 @@ public class LoginController implements Initializable {
 	}
 	
 	//회원가입 버튼 클릭
-	public void SigninButtonAction(ActionEvent a) {
+	public void SignupButtonAction(ActionEvent a) {
 //		Stage signinStage = new Stage(StageStyle.UTILITY);
-//		signinStage.initModality(Modality.WINDOW_MODAL);
-//		signinStage.initOwner(btn1.getScene().getWindow());
+//		signupStage.initModality(Modality.WINDOW_MODAL);
+//		signupStage.initOwner(btn1.getScene().getWindow());
 		
 		Node node = (Node) a.getSource();
 		Stage stage = (Stage) node.getScene().getWindow();
 		stage.close();
 		
 		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("SigninControl.fxml"));
+			Parent parent = FXMLLoader.load(getClass().getResource("SignupControl.fxml"));
 			Scene scene = new Scene(parent);
 			stage.setScene(scene);
 			stage.setResizable(false); 
 			stage.show();
 			
-			Button signinBtn = (Button)parent.lookup("#signinbtn"); 
+			Button signupBtn = (Button)parent.lookup("#signupbtn"); 
 			Button cancelBtn = (Button)parent.lookup("#cancelbtn");
 			cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -152,7 +152,7 @@ public class LoginController implements Initializable {
 				}
 			});
 
-			signinBtn.setOnAction(new EventHandler<ActionEvent>() {
+			signupBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
