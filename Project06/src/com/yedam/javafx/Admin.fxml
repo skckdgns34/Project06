@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.collections.FXCollections?>
 
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
-   <right>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </right>
-   <top>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TableView prefHeight="200.0" prefWidth="297.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn prefWidth="75.0" text="월" />
+          <TableColumn prefWidth="76.0" text="국어" />
+            <TableColumn prefWidth="82.0" text="영어" />
+            <TableColumn prefWidth="79.0" text="수학" />
         </columns>
       </TableView>
-   </top>
+   </center>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefHeight="26.0" prefWidth="100.0" text="사용자" textAlignment="CENTER" />
+            <ListView fx:id="listView" layoutX="181.0" layoutY="14.0" prefHeight="179.0" prefWidth="100.0">
+            <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="User 1" />
+                <String fx:value="User 2" />
+                <String fx:value="User 3" />
+                <String fx:value="User 4" />
+            </FXCollections>        
+          </items>
+      </ListView>
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="52.0" prefWidth="413.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="수정" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
