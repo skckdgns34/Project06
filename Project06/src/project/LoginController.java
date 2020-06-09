@@ -54,7 +54,8 @@ public class LoginController implements Initializable {
 						stage.setScene(scene);
 						stage.setResizable(false); 
 						stage.show();
-
+						
+						
 						
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -62,11 +63,10 @@ public class LoginController implements Initializable {
 					
 		
 				}
+				//사용자 로그인
 				for(int i=0; i<logIn.size(); i++) {
-					//사용자 로그인
 					if((txt1.getText().equals(logIn.get(i).getId()))&&(txt2.getText().equals(logIn.get(i).getPassword()))) {
 						System.out.println("로그인 됌");
-						
 						//사용자용 화면 추가.
 						Node node = (Node) event.getSource();
 						Stage stage = (Stage) node.getScene().getWindow();
@@ -129,19 +129,15 @@ public class LoginController implements Initializable {
 			e.printStackTrace();
 		}
 		return list;
-
 	}
 	
-	
-	
-	
 	//회원 가입
-	public void updateInfo(String title, String age, String password) {
+	public void updateInfo(String name, String age, String password) {
 		conn = getConnect();
 		String sql = "insert into info values(?, ?, ?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, title);
+			pstmt.setString(1, name);
 			pstmt.setString(2, age);
 			pstmt.setString(3, password);
 
@@ -168,6 +164,7 @@ public class LoginController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
 	//회원가입 버튼 클릭
 	public void SignupButtonAction(ActionEvent a) {
 		
@@ -225,4 +222,46 @@ public class LoginController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
+	
+	//사용자 아이디 목록 보기.
+	public ObservableList<LogInfo> getNameList() {
+		ObservableList<LogInfo> list = FXCollections.observableArrayList();
+		conn = getConnect();
+		String sql = "select id from info";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				LogInfo logInfo = new LogInfo(rs.getString("id"));
+				list.add(logInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	//관리자용 화면 수정 버튼.
+	public void adminUpdate(String users, String month, int korean, int english, int math) {
+	
+		conn = getConnect();
+		String sql = "insert into info values(?, ?, ?, ?, ?)";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, users);
+			pstmt.setString(2, month);
+			pstmt.setInt(3, korean);
+			pstmt.setInt(4, english);
+			pstmt.setInt(4, math);
+
+			int r = pstmt.executeUpdate();
+			System.out.println(r + "건 변경됨");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	//사용자용 화면 chart 보여주기.
+	
+
 }

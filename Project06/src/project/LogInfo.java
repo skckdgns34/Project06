@@ -7,7 +7,9 @@ public class LogInfo {
 	private SimpleStringProperty id;
 	private SimpleStringProperty password;
 	private SimpleIntegerProperty age;
-	
+	LogInfo(String id){
+		this.id = new SimpleStringProperty(id);
+	}
 	LogInfo(String id, String password){
 		this.id = new SimpleStringProperty(id);
 		this.password = new SimpleStringProperty(password);
