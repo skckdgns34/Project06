@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +22,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -42,10 +40,49 @@ public class LoginController implements Initializable {
 		btn1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+					//관리자용 로그인
+				if((txt1.getText().contentEquals("admin"))&&(txt2.getText().equals("admin"))){
+					System.out.println("관리자임.");
+					//관리자용 화면 추가
+					Node node = (Node) event.getSource();
+					Stage stage = (Stage) node.getScene().getWindow();
+					stage.close();
+					
+					try {
+						Parent parent = FXMLLoader.load(getClass().getResource("AdminControl.fxml"));
+						Scene scene = new Scene(parent);
+						stage.setScene(scene);
+						stage.setResizable(false); 
+						stage.show();
+
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+		
+				}
 				for(int i=0; i<logIn.size(); i++) {
+					//사용자 로그인
 					if((txt1.getText().equals(logIn.get(i).getId()))&&(txt2.getText().equals(logIn.get(i).getPassword()))) {
 						System.out.println("로그인 됌");
+						
+						//사용자용 화면 추가.
+						Node node = (Node) event.getSource();
+						Stage stage = (Stage) node.getScene().getWindow();
+						stage.close();
+						try {
+							Parent parent = FXMLLoader.load(getClass().getResource("GradeControl.fxml"));
+							Scene scene = new Scene(parent);
+							stage.setScene(scene);
+							stage.setResizable(false); 
+							stage.show();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
 					}else {
+						//팝업으로 아이디/비밀번호 틀렸다고 해주기.
 						System.out.println("안됌");
 					}
 				}
@@ -115,11 +152,24 @@ public class LoginController implements Initializable {
 		}
 	}
 	
+	// 화면 바꾸기
+	public void Changestage(ActionEvent a) {
+		Node node = (Node) a.getSource();
+		Stage stage = (Stage) node.getScene().getWindow();
+		stage.close();
+		
+		try {
+			Parent parent = FXMLLoader.load(getClass().getResource("SignupControl.fxml"));
+			Scene scene = new Scene(parent);
+			stage.setScene(scene);
+			stage.setResizable(false); 
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	//회원가입 버튼 클릭
 	public void SignupButtonAction(ActionEvent a) {
-//		Stage signinStage = new Stage(StageStyle.UTILITY);
-//		signupStage.initModality(Modality.WINDOW_MODAL);
-//		signupStage.initOwner(btn1.getScene().getWindow());
 		
 		Node node = (Node) a.getSource();
 		Stage stage = (Stage) node.getScene().getWindow();
@@ -172,7 +222,6 @@ public class LoginController implements Initializable {
 				}
 			});
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
