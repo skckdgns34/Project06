@@ -41,11 +41,12 @@ public class LoginController implements Initializable {
 
 		// 로그인 버튼
 		btn1.setOnAction(new EventHandler<ActionEvent>() {
+			
 			@Override
 			public void handle(ActionEvent event) {
 				// 관리자용 로그인
-				if ((txt1.getText().contentEquals("admin")) && (txt2.getText().equals("admin"))) {
-					System.out.println("관리자임.");
+				for (int i = 0; i < logIn.size(); i++) {
+				if ((txt1.getText().equals("admin")) && (txt2.getText().equals("admin"))) {
 					// 관리자용 화면 추가
 					
 					Node node = (Node) event.getSource();
@@ -53,7 +54,7 @@ public class LoginController implements Initializable {
 					stage.close();
 
 					try {
-						Parent parent = FXMLLoader.load(getClass().getResource("AdminControl.fxml"));
+						Parent parent = FXMLLoader.load(getClass().getResource("Admin.fxml"));
 						Scene scene = new Scene(parent);
 						stage.setScene(scene);
 						stage.setResizable(false);
@@ -64,24 +65,12 @@ public class LoginController implements Initializable {
 					}
 
 				}
+				
 				// 사용자 로그인
-				for (int i = 0; i < logIn.size(); i++) {
-					if ((txt1.getText().equals(logIn.get(i).getId()))
+				else if ((txt1.getText().equals(logIn.get(i).getId()))
 							&& (txt2.getText().equals(logIn.get(i).getPassword()))) {
-						System.out.println("로그인 됌");
-//						LogInfo log = new LogInfo();
-//						log.setId(logIn.get(i).getId());
-						// label
-//						try {
-//							Parent users = FXMLLoader.load(getClass().getResource("SignupControl.fxml"));
-//							Label user = (Label) users.lookup("#user");
-//							user.setText(logIn.get(i).getId());
-//							System.out.println(user.getText());
-//						} catch (IOException e1) {
-//							e1.printStackTrace();
-//						}
-
-						// 사용자용 화면 추가.
+						
+					// 사용자용 화면 추가.
 						Node node = (Node) event.getSource();
 						Stage stage = (Stage) node.getScene().getWindow();
 						stage.close();
@@ -101,7 +90,6 @@ public class LoginController implements Initializable {
 
 					} else {
 						// 팝업으로 아이디/비밀번호 틀렸다고 해주기.
-						System.out.println("안됌");
 					}
 				}
 
@@ -151,19 +139,18 @@ public class LoginController implements Initializable {
 	}
 
 	// 회원 가입
-	public void updateInfo(String name, String age, String password) {
+	public void updateInfo(String name, String password) {
 		conn = getConnect();
-		String sql = "insert into info values(?, ?, ?)";
+		String sql = "insert into info values(?, ?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
-			pstmt.setString(2, age);
-			pstmt.setString(3, password);
+			pstmt.setString(2, password);
 
 			int r = pstmt.executeUpdate();
-			System.out.println(r + "건 변경됨");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//이미 있는 아이디
+			System.out.println("이미 있는 아이디임");
 		}
 	}
 
@@ -223,9 +210,9 @@ public class LoginController implements Initializable {
 				@Override
 				public void handle(ActionEvent event) {
 					TextField txtSign = (TextField) parent.lookup("#txtsign");
-					TextField txtAge = (TextField) parent.lookup("#txtage");
+					
 					PasswordField passwordField = (PasswordField) parent.lookup("#passwordfield");
-					updateInfo(txtSign.getText(), txtAge.getText(), passwordField.getText());
+					updateInfo(txtSign.getText(), passwordField.getText());
 					try {
 						Parent parent = FXMLLoader.load(getClass().getResource("LoginControl.fxml"));
 						Scene scene = new Scene(parent);
@@ -274,7 +261,6 @@ public class LoginController implements Initializable {
 			pstmt.setInt(4, math);
 
 			int r = pstmt.executeUpdate();
-			System.out.println(r + "건 변경됨");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

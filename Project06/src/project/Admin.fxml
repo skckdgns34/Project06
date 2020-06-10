@@ -10,7 +10,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.AdminController">
    <center>
-      <TableView prefHeight="200.0" prefWidth="297.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableView" prefHeight="200.0" prefWidth="297.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="75.0" text="월" />
           <TableColumn prefWidth="76.0" text="국어" />
@@ -39,7 +39,7 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="52.0" prefWidth="413.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="수정" />
+            <Button fx:id="btnUpdate" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="추가" />
          </children>
       </HBox>
    </bottom>

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,13 +44,10 @@ public class GradeController implements Initializable {
 		this.id = id;
 	}
 	
-	public GradeController() {
-		System.out.println("GradeController()");
-	}
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 		grade = getGradeList();
 
 		TableColumn<Grade, ?> tcMonth = tableView.getColumns().get(0);
@@ -74,6 +72,15 @@ public class GradeController implements Initializable {
 			}
 		});
 
+		
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				grade = getGradeList();
+				tableView.setItems(grade);
+			}
+		});
 	}
 
 	// connect
@@ -94,26 +101,16 @@ public class GradeController implements Initializable {
 	public ObservableList<Grade> getGradeList() {
 		ObservableList<Grade> list = FXCollections.observableArrayList();
 		conn = getConnect();
-		// label
-//		LogInfo log = new LogInfo();
-//		log.getId();
-		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("SignupControl.fxml"));
-			Label user = (Label) parent.lookup("#user");
-			System.out.println(user.getText());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String sql = "select month, korean, english, math from grade where users = '?'";
+	
+		String sql = "select month, korean, english, math from grade where users = ? order by 1";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, id);
+			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Grade grade = new Grade(rs.getString("month"), rs.getInt("korean"), rs.getInt("english"),
 						rs.getInt("math"));
 				list.add(grade);
-				System.out.println(list.get(0).getEnglish());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -164,6 +161,9 @@ public class GradeController implements Initializable {
 			chartStage.setScene(scene);
 			chartStage.show();
 			chartStage.setResizable(false);
+
+			Button btnClose = (Button) parent.lookup("#btnClose");
+			btnClose.setOnAction(e-> chartStage.close());
 
 		} catch (IOException e) {
 			e.printStackTrace();
