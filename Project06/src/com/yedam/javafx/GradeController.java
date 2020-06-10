@@ -2,6 +2,11 @@ package com.yedam.javafx;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -23,23 +28,18 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-
 public class GradeController implements Initializable{
 	@FXML TableView<Grade> tableView;
-	@FXML Button updateBtn, cancelBtn, btn, charbtn;
+	@FXML Button updateBtn, cancelBtn, chartBtn;
 	Connection conn;
 	PreparedStatement pstmt = null;
 	ObservableList<Grade> grade;
 	@Override
+	
+	
 	public void initialize(URL location, ResourceBundle resources) {
 
-		 grade = getGradeList();
+		grade = getGradeList();
 		
 		TableColumn<Grade, ?> tcMonth = tableView.getColumns().get(0);
 		tcMonth.setCellValueFactory(new PropertyValueFactory("month"));
@@ -55,8 +55,7 @@ public class GradeController implements Initializable{
 		
 		tableView.setItems(grade);
 
-		
-		charbtn.setOnAction(new EventHandler<ActionEvent>() {
+		chartBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -64,6 +63,8 @@ public class GradeController implements Initializable{
 
 			}
 		});
+		
+		
 	}
 	// connect
 	public Connection getConnect() {
@@ -83,7 +84,7 @@ public class GradeController implements Initializable{
 	public ObservableList<Grade> getGradeList() {
 		ObservableList<Grade> list = FXCollections.observableArrayList();
 		conn = getConnect();
-		String sql = "select month, korean, english, math from grade";
+		String sql = "select month, korean, english, math from grade order by 1";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
@@ -97,13 +98,12 @@ public class GradeController implements Initializable{
 		}
 		return list;
 	}
-
-
-
+	
+	//chartbutton 클릭
 	public void buttonChartAction(ActionEvent ae) {
 		Stage chartStage = new Stage(StageStyle.UTILITY);
 		chartStage.initModality(Modality.WINDOW_MODAL);
-		chartStage.initOwner(btn.getScene().getWindow());
+		chartStage.initOwner(chartBtn.getScene().getWindow());
 
 		try {
 			Parent parent = FXMLLoader.load(getClass().getResource("Chart.fxml"));
@@ -112,7 +112,7 @@ public class GradeController implements Initializable{
 			XYChart.Series<String, Integer> serieskorean = new XYChart.Series<String, Integer>();
 			ObservableList<XYChart.Data<String, Integer>> dataskorean = FXCollections.observableArrayList();
 			for (int i = 0; i < grade.size(); i++) {
-				dataskorean.add(new XYChart.Data(grade.get(i).getName(), grade.get(i).getKorean()));
+				dataskorean.add(new XYChart.Data(grade.get(i).getMonth(), grade.get(i).getKorean()));
 				// "이름",국어점수
 			}
 			serieskorean.setData(dataskorean);
@@ -121,7 +121,7 @@ public class GradeController implements Initializable{
 			XYChart.Series<String, Integer> seriesMath = new XYChart.Series<String, Integer>();
 			ObservableList<XYChart.Data<String, Integer>> datasMath = FXCollections.observableArrayList();
 			for (int i = 0; i < grade.size(); i++) {
-				datasMath.add(new XYChart.Data(grade.get(i).getName(), grade.get(i).getMath()));
+				datasMath.add(new XYChart.Data(grade.get(i).getMonth(), grade.get(i).getMath()));
 				// "이름",국어점수
 			}
 			seriesMath.setData(datasMath);
@@ -131,7 +131,7 @@ public class GradeController implements Initializable{
 			XYChart.Series<String, Integer> seriesEnglish = new XYChart.Series<String, Integer>();
 			ObservableList<XYChart.Data<String, Integer>> datasEnglish = FXCollections.observableArrayList();
 			for (int i = 0; i < grade.size(); i++) {
-				datasEnglish.add(new XYChart.Data(grade.get(i).getName(), grade.get(i).getEnglish()));
+				datasEnglish.add(new XYChart.Data(grade.get(i).getMonth(), grade.get(i).getEnglish()));
 				// "이름",영어점수
 			}
 			seriesEnglish.setData(datasEnglish);
@@ -147,6 +147,5 @@ public class GradeController implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yedam.javafx.GradeController">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.GradeController">
    <center>
-      <TableView prefHeight="156.0" prefWidth="299.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableView" prefHeight="156.0" prefWidth="299.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="75.0" text="월" />
           <TableColumn prefWidth="75.0" text="국어" />
@@ -19,9 +19,10 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btn" mnemonicParsing="false" text="수정" textFill="#2c3dab" />
-            <Button fx:id="charbtn" mnemonicParsing="false" prefHeight="23.0" prefWidth="42.0" text="차트" textFill="#2d4d9e" />
+            <Button fx:id="updateBtn" mnemonicParsing="false" text="수정" textFill="#2c3dab" />
+            <Button fx:id="chartBtn" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="23.0" prefWidth="42.0" text="차트" textFill="#2d4d9e" />
          </children>
       </HBox>
    </bottom>
 </BorderPane>
+

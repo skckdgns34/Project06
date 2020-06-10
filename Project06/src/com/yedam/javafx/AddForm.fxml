@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 
-<BorderPane style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane style="-fx-background-color: blue;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<padding>
 		<Insets topRightBottomLeft="20" />
 	</padding>
@@ -43,8 +44,11 @@
 				<Insets topRightBottomLeft="10" />
 			</BorderPane.margin>
 			<children>
-				<Button id="btnFormAdd" style="-fx-background-color: black;" text="Save" textFill="#fcfafa" />
-				<Button id="btnFormCancel" style="-fx-background-color: black;" text="Cancel" textFill="#f8f6f6" />
+				<Button id="btnFormAdd" prefHeight="23.0" prefWidth="55.0" style="-fx-background-color: yellow;" text="save" textFill="#0526fc">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+				<Button id="btnFormCancel" style="-fx-background-color: yellow;" text="Cancel" textFill="#0526fc" />
 			</children>
 		</HBox>
 	</bottom>

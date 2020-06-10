@@ -16,13 +16,13 @@ public class Grade {
 		this.english = new SimpleIntegerProperty(english);//
 	}
 	
-	public void setName(String month) {
+	public void setMonth(String month) {
 		this.month.set(month);
 	}
-	public String getName() {
+	public String getMonth() {
 		return this.month.get();
 	}
-	public SimpleStringProperty nameProperty() {
+	public SimpleStringProperty monthProperty() {
 		return this.month;
 	}
 	

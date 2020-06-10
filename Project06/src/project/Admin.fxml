@@ -40,6 +40,8 @@
       <HBox alignment="CENTER" prefHeight="52.0" prefWidth="413.0" BorderPane.alignment="CENTER">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="수정" />
+            
+            </Button>
          </children>
       </HBox>
    </bottom>
