@@ -59,7 +59,7 @@ public class LoginController implements Initializable {
 						stage.setScene(scene);
 						stage.setResizable(false);
 						stage.show();
-
+						break;
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -69,7 +69,7 @@ public class LoginController implements Initializable {
 				// 사용자 로그인
 				else if ((txt1.getText().equals(logIn.get(i).getId()))
 							&& (txt2.getText().equals(logIn.get(i).getPassword()))) {
-						
+
 					// 사용자용 화면 추가.
 						Node node = (Node) event.getSource();
 						Stage stage = (Stage) node.getScene().getWindow();
@@ -83,12 +83,13 @@ public class LoginController implements Initializable {
 							stage.setScene(scene);
 							stage.setResizable(false);
 							stage.show();
-
+							break;
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 
 					} else {
+						
 						// 팝업으로 아이디/비밀번호 틀렸다고 해주기.
 					}
 				}

@@ -169,5 +169,4 @@ public class GradeController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
 }

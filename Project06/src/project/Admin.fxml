@@ -12,10 +12,10 @@
    <center>
       <TableView fx:id="tableView" prefHeight="200.0" prefWidth="297.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" text="월" style="-fx-background-color: black;"/>
-          <TableColumn prefWidth="76.0" text="국어" style="-fx-background-color: black;"/>
-            <TableColumn prefWidth="82.0" text="영어" style="-fx-background-color: black;"/>
-            <TableColumn prefWidth="79.0" text="수학" style="-fx-background-color: black;"/>
+          <TableColumn prefWidth="75.0" text="월" />
+          <TableColumn prefWidth="76.0" text="국어" />
+            <TableColumn prefWidth="82.0" text="영어" />
+            <TableColumn prefWidth="79.0" text="수학" />
         </columns>
       </TableView>
    </center>

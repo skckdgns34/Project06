@@ -31,18 +31,22 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class AdminController implements Initializable{
-	@FXML ListView listView;
-	@FXML TableView<Grade> tableView;
-	@FXML Button btnUpdate;
+public class AdminController implements Initializable {
+	@FXML
+	ListView listView;
+	@FXML
+	TableView<Grade> tableView;
+	@FXML
+	Button btnUpdate;
+
 	Connection conn;
 	PreparedStatement pstmt = null;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
 		ObservableList<String> userId = getUserList();
-		
-		
+
 		TableColumn<Grade, ?> tcMonth = tableView.getColumns().get(0);
 		tcMonth.setCellValueFactory(new PropertyValueFactory("month"));
 
@@ -54,72 +58,89 @@ public class AdminController implements Initializable{
 
 		TableColumn<Grade, ?> tcEnglish = tableView.getColumns().get(3);
 		tcEnglish.setCellValueFactory(new PropertyValueFactory("math"));
-		
-		
+
 		listView.setItems(userId);
 		listView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				
+
 				ObservableList<Grade> grade = getGradeList(listView.getSelectionModel().getSelectedItem().toString());
 				tableView.setItems(grade);
-				
-				
+
 			}
 		});
-		
+
 		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
-					buttonAddAction(event);
-				
-				
+				buttonAddAction(event);
+
 			}
 		});
 	}
-	
-	//수정버튼 눌렀을때.
+
+	// 수정버튼 눌렀을때.
 	public void buttonAddAction(ActionEvent ae) {
+
+		ObservableList<String> monthlist = null;
+
 		Stage addStage = new Stage(StageStyle.UTILITY);
 		addStage.initModality(Modality.WINDOW_MODAL);
-		addStage.initOwner(btnUpdate.getScene().getWindow()); //해당 id가 있는 window에 새로만드는 윈도우를 뿌리겠다는 거
-		
+		addStage.initOwner(btnUpdate.getScene().getWindow());
+
 		try {
 			Parent parent = FXMLLoader.load(getClass().getResource("AddForm.fxml"));
 			Scene scene = new Scene(parent);
 			addStage.setScene(scene);
-			addStage.setResizable(false); //윈도우 크기 변경 불가능하게 하는거.
-			addStage.show();		
+			addStage.setResizable(false);
+			addStage.show();
 			
-			ComboBox comboMonth = (ComboBox)parent.lookup("#comboMonth");
-			TextField txtKorean = (TextField)parent.lookup("#txtKorean");
-			TextField txtMath = (TextField)parent.lookup("#txtMath");
-			TextField txtEnglish = (TextField)parent.lookup("#txtEnglish");
-			
-			Button btnFormAdd = (Button)parent.lookup("#btnFormAdd"); //fx:id말고 그냥 id로 선언되어있는 거 땡겨오는 법
-			Button btnFormCancel = (Button)parent.lookup("#btnFormCancel");
-			btnFormCancel.setOnAction(e-> addStage.close());
-			btnFormAdd.setOnAction(new EventHandler<ActionEvent>() {
+//			for(int i =0; i<12; i++) {
+//				if(tableView.getColumns().get(0).)
+//				monthlist.add(i+"월");
+//			}
+			ComboBox<String> comboMonth = (ComboBox) parent.lookup("#comboMonth");
+			comboMonth.setItems(monthlist);
 
+			TextField txtKorean = (TextField) parent.lookup("#txtKorean");
+
+			TextField txtMath = (TextField) parent.lookup("#txtMath");
+			TextField txtEnglish = (TextField) parent.lookup("#txtEnglish");
+
+			Button btnFormAdd = (Button) parent.lookup("#btnFormAdd"); // fx:id말고 그냥 id로 선언되어있는 거 땡겨오는 법
+			Button btnFormCancel = (Button) parent.lookup("#btnFormCancel");
+			btnFormCancel.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					updateGrade(listView.getSelectionModel().getSelectedItem().toString(),
-							comboMonth.getValue().toString(), txtKorean.getText(),
-							txtMath.getText(), txtEnglish.getText());
+					System.out.println(comboMonth.getValue().toString());
+					System.out.println(tableView.getColumns().get(0).getText());
+					addStage.close();
+				}
+			} ); 
+			
+			
+			
+			btnFormAdd.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					if (!comboMonth.getValue().toString().equals(tableView.getColumns().get(0).getText())) {
+						updateGrade(listView.getSelectionModel().getSelectedItem().toString(),
+								comboMonth.getValue().toString(), txtKorean.getText(), txtMath.getText(),
+								txtEnglish.getText());
+					}
 					addStage.close();
 				}
 			});
-			
 
-			
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	//성적 추가
+
+	// 성적 추가
 	public void updateGrade(String id, String month, String korean, String english, String math) {
 		conn = getConnect();
 		String sql = "insert into grade values(?,?,?,?,?)";
@@ -137,12 +158,12 @@ public class AdminController implements Initializable{
 			e.printStackTrace();
 		}
 	}
-	
-	//사용자별 성적표
+
+	// 사용자별 성적표
 	public ObservableList<Grade> getGradeList(String id) {
 		ObservableList<Grade> list = FXCollections.observableArrayList();
 		conn = getConnect();
-	
+
 		String sql = "select month, korean, english, math from grade where users = ? order by 1";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -159,7 +180,7 @@ public class AdminController implements Initializable{
 		return list;
 	}
 
-	//connect
+	// connect
 	public Connection getConnect() {
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		try {
@@ -173,8 +194,7 @@ public class AdminController implements Initializable{
 		return conn;
 	}
 
-	
-	//id 목록
+	// id 목록
 	public ObservableList<String> getUserList() {
 		ObservableList<String> list = FXCollections.observableArrayList();
 		conn = getConnect();
@@ -184,7 +204,7 @@ public class AdminController implements Initializable{
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				String id = rs.getString("id");
-				if(id.equals("admin"))
+				if (id.equals("admin"))
 					continue;
 				list.add(id);
 			}
