@@ -87,9 +87,9 @@ public class LoginController implements Initializable {
 						try {
 //							Parent parent = FXMLLoader.load(getClass().getResource("GradeControl.fxml"));
 							FXMLLoader loader = new FXMLLoader(getClass().getResource("GradeControl.fxml"));
+							Scene scene = new Scene(loader.load());
 							GradeController gradeController = loader.getController();
 							gradeController.setId(logIn.get(i).getId());
-							Scene scene = new Scene(loader.load());
 							stage.setScene(scene);
 							stage.setResizable(false);
 							stage.show();
