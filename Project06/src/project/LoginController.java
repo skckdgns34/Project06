@@ -47,6 +47,7 @@ public class LoginController implements Initializable {
 				if ((txt1.getText().contentEquals("admin")) && (txt2.getText().equals("admin"))) {
 					System.out.println("관리자임.");
 					// 관리자용 화면 추가
+					
 					Node node = (Node) event.getSource();
 					Stage stage = (Stage) node.getScene().getWindow();
 					stage.close();

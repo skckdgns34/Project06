@@ -102,7 +102,7 @@ public class GradeController implements Initializable{
 		String sql = "select month, korean, english, math from grade where users = '?'";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, log.getId());
+//			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Grade grade = new Grade(rs.getString("month"), rs.getInt("korean"),rs.getInt("english"),rs.getInt("math"));
