@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,31 +30,38 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class GradeController implements Initializable{
-	@FXML TableView<Grade> tableView;
-	@FXML Button updateBtn, cancelBtn, chartBtn;
+public class GradeController implements Initializable {
+	@FXML
+	TableView<Grade> tableView;
+	@FXML
+	Button cancelBtn, chartBtn;
 	Connection conn;
 	PreparedStatement pstmt = null;
 	ObservableList<Grade> grade;
-	@Override
-	
-	
-	public void initialize(URL location, ResourceBundle resources) {
+	String id;
 
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 		grade = getGradeList();
-		
+
 		TableColumn<Grade, ?> tcMonth = tableView.getColumns().get(0);
 		tcMonth.setCellValueFactory(new PropertyValueFactory("month"));
-		
+
 		TableColumn<Grade, ?> tckorean = tableView.getColumns().get(1);
 		tckorean.setCellValueFactory(new PropertyValueFactory("korean"));
-		
+
 		TableColumn<Grade, ?> tcMath = tableView.getColumns().get(2);
 		tcMath.setCellValueFactory(new PropertyValueFactory("english"));
-		
+
 		TableColumn<Grade, ?> tcEnglish = tableView.getColumns().get(3);
 		tcEnglish.setCellValueFactory(new PropertyValueFactory("math"));
-		
+
 		tableView.setItems(grade);
 
 		chartBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -60,12 +69,20 @@ public class GradeController implements Initializable{
 			@Override
 			public void handle(ActionEvent arg0) {
 				buttonChartAction(arg0);
-
 			}
 		});
+
 		
-		
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				grade = getGradeList();
+				tableView.setItems(grade);
+			}
+		});
 	}
+
 	// connect
 	public Connection getConnect() {
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -79,27 +96,29 @@ public class GradeController implements Initializable{
 		}
 		return conn;
 	}
-	
-	//성적 목록
+
+	// 성적 목록
 	public ObservableList<Grade> getGradeList() {
 		ObservableList<Grade> list = FXCollections.observableArrayList();
 		conn = getConnect();
-		String sql = "select month, korean, english, math from grade";
+	
+		String sql = "select month, korean, english, math from grade where users = ? order by 1";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				Grade grade = new Grade(rs.getString("month"), rs.getInt("korean"),rs.getInt("english"),rs.getInt("math"));
+				Grade grade = new Grade(rs.getString("month"), rs.getInt("korean"), rs.getInt("english"),
+						rs.getInt("math"));
 				list.add(grade);
-				System.out.println(list.get(0).getEnglish());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
 	}
-	
-	//chartbutton 클릭
+
+	// chartbutton 클릭
 	public void buttonChartAction(ActionEvent ae) {
 		Stage chartStage = new Stage(StageStyle.UTILITY);
 		chartStage.initModality(Modality.WINDOW_MODAL);
@@ -127,7 +146,6 @@ public class GradeController implements Initializable{
 			seriesMath.setData(datasMath);
 			seriesMath.setName("수학");
 
-
 			XYChart.Series<String, Integer> seriesEnglish = new XYChart.Series<String, Integer>();
 			ObservableList<XYChart.Data<String, Integer>> datasEnglish = FXCollections.observableArrayList();
 			for (int i = 0; i < grade.size(); i++) {
@@ -144,8 +162,12 @@ public class GradeController implements Initializable{
 			chartStage.show();
 			chartStage.setResizable(false);
 
+			Button btnClose = (Button) parent.lookup("#btnClose");
+			btnClose.setOnAction(e-> chartStage.close());
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 }
