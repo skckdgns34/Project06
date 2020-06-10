@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -30,15 +31,20 @@ import javafx.stage.StageStyle;
 
 public class GradeController implements Initializable{
 	@FXML TableView<Grade> tableView;
-	@FXML Button updateBtn, cancelBtn, chartBtn;
+	@FXML Button cancelBtn, chartBtn;
 	Connection conn;
 	PreparedStatement pstmt = null;
 	ObservableList<Grade> grade;
+	String id;
+	
+	public void setId(String id) {
+		this.id =id;
+	}
+	
 	@Override
-	
-	
 	public void initialize(URL location, ResourceBundle resources) {
-
+		
+		
 		grade = getGradeList();
 		
 		TableColumn<Grade, ?> tcMonth = tableView.getColumns().get(0);
@@ -60,7 +66,6 @@ public class GradeController implements Initializable{
 			@Override
 			public void handle(ActionEvent arg0) {
 				buttonChartAction(arg0);
-
 			}
 		});
 		
@@ -84,9 +89,20 @@ public class GradeController implements Initializable{
 	public ObservableList<Grade> getGradeList() {
 		ObservableList<Grade> list = FXCollections.observableArrayList();
 		conn = getConnect();
-		String sql = "select month, korean, english, math from grade";
+		//label
+//		LogInfo log = new LogInfo();
+//		log.getId();
+		try {
+			Parent parent = FXMLLoader.load(getClass().getResource("SignupControl.fxml"));
+			Label user = (Label) parent.lookup("#user");
+			System.out.println(user.getText());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String sql = "select month, korean, english, math from grade where users = '?'";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, log.getId());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Grade grade = new Grade(rs.getString("month"), rs.getInt("korean"),rs.getInt("english"),rs.getInt("math"));

@@ -19,8 +19,8 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="updateBtn" mnemonicParsing="false" text="수정" textFill="#2c3dab" />
             <Button fx:id="chartBtn" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="23.0" prefWidth="42.0" text="차트" textFill="#2d4d9e" />
+           
          </children>
       </HBox>
    </bottom>
