@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<AnchorPane prefHeight="350.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.LoginController">
+	<children>
+		<TextField fx:id="txt1" layoutX="44.0" layoutY="185.0" prefHeight="23.0" prefWidth="169.0" />
+		<TextField fx:id="txt2" layoutX="44.0" layoutY="242.0" prefHeight="23.0" prefWidth="169.0" />
+		<Button fx:id="btn1" layoutX="43.0" layoutY="284.0" prefHeight="23.0" prefWidth="80.0" text="login">
+			<graphic>
+				<ImageView fitHeight="15.0" fitWidth="15.0">
+					<image>
+						<Image url="@../icons/login.png" />
+					</image>
+				</ImageView>
+			</graphic>
+		</Button>
+		<Button fx:id="btn2" layoutX="134.0" layoutY="284.0" prefHeight="23.0" prefWidth="80.0" text="signup">
+			<graphic>
+      				<ImageView fitHeight="15.0" fitWidth="15.0">
+      					<image>
+      						<Image url="@../icons/signup.png" />
+      					</image>
+      				</ImageView>
+			</graphic>
+		</Button>
+		<Label layoutX="46.0" layoutY="160.0" text="아이디" />
+		<Label layoutX="46.0" layoutY="220.0" text="비밀번호" />
+	</children>
+</AnchorPane>

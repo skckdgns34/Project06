@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.image.ImageView?>
+
+<AnchorPane prefHeight="350.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Label layoutX="46.0" layoutY="117.0" text="이름" />
+		
+		<Label layoutX="46.0" layoutY="221.0" text="비밀번호" />
+		<TextField id="txtsign" layoutX="44.0" layoutY="138.0" prefHeight="23.0" prefWidth="169.0" />
+		<PasswordField id="passwordfield" layoutX="44.0" layoutY="242.0" prefHeight="23.0" prefWidth="169.0" />
+		<Button id="signupbtn" layoutX="43.0" layoutY="284.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="80.0" text="signup">
+			<graphic>
+      				<ImageView fitHeight="15.0" fitWidth="15.0">
+      					<image>
+      						<Image url="@../icons/signup.png" />
+      					</image>
+      				</ImageView>
+			</graphic>
+		</Button>
+		<Button id="cancelbtn" layoutX="134.0" layoutY="284.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="80.0" text="cancel">
+			<graphic>
+				<ImageView fitHeight="15.0" fitWidth="15.0">
+					<image>
+						<Image url="@../icons/cancel.png" />
+					</image>
+				</ImageView>
+			</graphic>
+		</Button>
+	
+      <Label id="user" layoutX="14.0" layoutY="14.0" text="Label" visible="false" />
+	</children>
+</AnchorPane>
