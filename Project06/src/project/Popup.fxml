@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+
+<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT"
+	style="-fx-background=color: black; -fx-background-radius: 20;">
+	<children>
+		<Label id="lblMessag" style="-fx-text-fill: white;">
+		</Label>
+	</children>
+</HBox>
+

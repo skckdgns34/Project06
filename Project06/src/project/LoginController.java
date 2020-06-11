@@ -16,6 +16,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,6 +25,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
@@ -45,7 +51,6 @@ public class LoginController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// 관리자용 로그인
-				for (int i = 0; i < logIn.size(); i++) {
 				if ((txt1.getText().equals("admin")) && (txt2.getText().equals("admin"))) {
 					// 관리자용 화면 추가
 					
@@ -85,16 +90,19 @@ public class LoginController implements Initializable {
 							stage.show();
 
 						} catch (IOException e) {
-							e.printStackTrace();
+							System.out.println("오류");
+							
 						}
 
-					} else {
-						// 팝업으로 아이디/비밀번호 틀렸다고 해주기.
+					} else if((txt1.getText().equals(logIn.get(i).getId()))
+							&& (!txt2.getText().equals(logIn.get(i).getPassword()))) {
+						messagePopup("비밀번호가 틀렸습니다");
+					} else if(!txt1.getText().equals(logIn.get(i).getId())) {
+						messagePopup("아이디가 틀렸습니다");
 					}
 				}
-
 			}
-		});
+		);
 
 		// 회원가입 버튼
 		btn2.setOnAction(new EventHandler<ActionEvent>() {
@@ -266,5 +274,24 @@ public class LoginController implements Initializable {
 		}
 	}
 	// 사용자용 화면 chart 보여주기.
+	public void messagePopup(String message) {
 
+		HBox hbox = new HBox();
+		hbox.setStyle("-fx-background-color: black; -fx-background-radius: 20;");
+		hbox.setAlignment(Pos.CENTER);
+		//컨트롤(ImageView)
+		// 컨트롤(Label)
+		Label label = new Label();
+		HBox.setMargin(label, new Insets(0, 5, 0, 5));
+		label.setText(message);
+		label.setStyle("-fx-text-fill: white; ");
+		// 컨테이너에 컨트롤 담기
+		hbox.getChildren().add(label);
+		// 팝업생성, 컨테이너 담아서 팝업호출
+		Popup popup = new Popup();
+		popup.getContent().add(hbox);
+		popup.setAutoHide(true);
+		popup.show(btn1.getScene().getWindow());
+
+	}
 }

@@ -7,14 +7,14 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.image.ImageView?>
 
-<AnchorPane prefHeight="350.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="350.0" prefWidth="250.0" style="-fx-background-color: #222222;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<Label layoutX="46.0" layoutY="117.0" text="이름" />
+		<Label layoutX="46.0" layoutY="117.0" text="이름" textFill="#fffefe" />
 		
-		<Label layoutX="46.0" layoutY="221.0" text="비밀번호" />
+		<Label layoutX="46.0" layoutY="221.0" text="비밀번호" textFill="#fcfafa" />
 		<TextField id="txtsign" layoutX="44.0" layoutY="138.0" prefHeight="23.0" prefWidth="169.0" />
 		<PasswordField id="passwordfield" layoutX="44.0" layoutY="242.0" prefHeight="23.0" prefWidth="169.0" />
-		<Button id="signupbtn" layoutX="43.0" layoutY="284.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="80.0" text="signup">
+		<Button id="signupbtn" layoutX="43.0" layoutY="284.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="80.0" style="-fx-background-color: #0066FF;" text="signup" textFill="#222222">
 			<graphic>
       				<ImageView fitHeight="15.0" fitWidth="15.0">
       					<image>
@@ -23,7 +23,7 @@
       				</ImageView>
 			</graphic>
 		</Button>
-		<Button id="cancelbtn" layoutX="134.0" layoutY="284.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="80.0" text="cancel">
+		<Button id="cancelbtn" layoutX="134.0" layoutY="284.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="80.0" style="-fx-background-color: #0066FF;" text="cancel" textFill="#222222">
 			<graphic>
 				<ImageView fitHeight="15.0" fitWidth="15.0">
 					<image>
