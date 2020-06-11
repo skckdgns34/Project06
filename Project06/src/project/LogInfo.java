@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 public class LogInfo {
 	private SimpleStringProperty id;
 	private SimpleStringProperty password;
-	private SimpleIntegerProperty age;
 	LogInfo(){
 		
 	}
@@ -38,15 +37,5 @@ public class LogInfo {
 	public SimpleStringProperty passwordProperty() {
 		return this.password;
 	}
-	
-	//age
-	public void setAge(int age) {
-		this.age.set(age);
-	}
-	public int getAge() {
-		return this.age.get();
-	}
-	public SimpleIntegerProperty ageProperty() {
-		return this.age;
-	}
+
 }

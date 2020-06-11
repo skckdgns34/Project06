@@ -16,6 +16,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,6 +25,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
@@ -37,40 +43,38 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ObservableList<LogInfo> logIn = getBoardList();
+		LogInfo logIn = getLoginList(txt1.getText(), txt2.getText());
 
 		// 로그인 버튼
 		btn1.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 				// 관리자용 로그인
-				for (int i = 0; i < logIn.size(); i++) {
-				if ((txt1.getText().equals("admin")) && (txt2.getText().equals("admin"))) {
-					// 관리자용 화면 추가
-					
-					Node node = (Node) event.getSource();
-					Stage stage = (Stage) node.getScene().getWindow();
-					stage.close();
+				
+					if () {
+						// 관리자용 화면 추가
 
-					try {
-						Parent parent = FXMLLoader.load(getClass().getResource("Admin.fxml"));
-						Scene scene = new Scene(parent);
-						stage.setScene(scene);
-						stage.setResizable(false);
-						stage.show();
-						break;
-					} catch (IOException e) {
-						e.printStackTrace();
+						Node node = (Node) event.getSource();
+						Stage stage = (Stage) node.getScene().getWindow();
+						stage.close();
+
+						try {
+							Parent parent = FXMLLoader.load(getClass().getResource("Admin.fxml"));
+							Scene scene = new Scene(parent);
+							stage.setScene(scene);
+							stage.setResizable(false);
+							stage.show();
+							break;
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 
-				}
-				
-				// 사용자 로그인
-				else if ((txt1.getText().equals(logIn.get(i).getId()))
-							&& (txt2.getText().equals(logIn.get(i).getPassword()))) {
+					// 사용자 로그인
+					else if () {
 
-					// 사용자용 화면 추가.
+						// 사용자용 화면 추가.
 						Node node = (Node) event.getSource();
 						Stage stage = (Stage) node.getScene().getWindow();
 						stage.close();
@@ -79,22 +83,20 @@ public class LoginController implements Initializable {
 							FXMLLoader loader = new FXMLLoader(getClass().getResource("GradeControl.fxml"));
 							Scene scene = new Scene(loader.load());
 							GradeController gradeController = loader.getController();
-							gradeController.setId(logIn.get(i).getId());
+							gradeController.setId(logIn.getId());
 							stage.setScene(scene);
 							stage.setResizable(false);
 							stage.show();
 							break;
 						} catch (IOException e) {
-							e.printStackTrace();
-						}
 
-					} else {
-						
-						// 팝업으로 아이디/비밀번호 틀렸다고 해주기.
-					}
+						}
+					} else if (logIn==null) {
+						messagePopup("아이디 확인.");
+					} 
+
 				}
 
-			}
 		});
 
 		// 회원가입 버튼
@@ -122,21 +124,21 @@ public class LoginController implements Initializable {
 	}
 
 	// 로그인
-	public ObservableList<LogInfo> getBoardList() {
-		ObservableList<LogInfo> list = FXCollections.observableArrayList();
+	public LogInfo getLoginList(String id, String password) {
+		LogInfo logInfo = null;
 		conn = getConnect();
-		String sql = "select id, password from info";
+		String sql = "select id, password from info where id=? and password = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
 			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				LogInfo logInfo = new LogInfo(rs.getString("id"), rs.getString("password"));
-				list.add(logInfo);
-			}
+			if(rs.next())
+				logInfo = new LogInfo(rs.getString("id"), rs.getString("password"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return list;
+		return logInfo;
 	}
 
 	// 회원 가입
@@ -150,7 +152,7 @@ public class LoginController implements Initializable {
 
 			int r = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			//이미 있는 아이디
+			// 이미 있는 아이디
 			System.out.println("이미 있는 아이디임");
 		}
 	}
@@ -211,7 +213,7 @@ public class LoginController implements Initializable {
 				@Override
 				public void handle(ActionEvent event) {
 					TextField txtSign = (TextField) parent.lookup("#txtsign");
-					
+
 					PasswordField passwordField = (PasswordField) parent.lookup("#passwordfield");
 					updateInfo(txtSign.getText(), passwordField.getText());
 					try {
@@ -266,6 +268,27 @@ public class LoginController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	// 사용자용 화면 chart 보여주기.
+
+	public void messagePopup(String message) {
+		// 컨테이너(HBox) 생성.
+		HBox hbox = new HBox();
+		hbox.setStyle("-fx-background-color: black; -fx-background-radius: 20;");
+		hbox.setAlignment(Pos.CENTER);
+
+		// 컨트롤(Label)
+		Label label = new Label();
+		HBox.setMargin(label, new Insets(0, 5, 0, 5));
+		label.setText(message);
+		label.setStyle("-fx-text-fill: white; ");
+
+		// 컨테이너에 컨트롤 담기
+		hbox.getChildren().add(label);
+
+		// 팝업생성. 컨테이너 담아서 팝업 호출.
+		Popup popup = new Popup();
+		popup.getContent().add(hbox);
+		popup.setAutoHide(true); // focus를 잃으면 안보임(닫힘?)
+		popup.show(btn1.getScene().getWindow());
+	} // end of messagePopup
 
 }

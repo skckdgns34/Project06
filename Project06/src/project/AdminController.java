@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -38,14 +39,14 @@ public class AdminController implements Initializable {
 	TableView<Grade> tableView;
 	@FXML
 	Button btnUpdate;
-
 	Connection conn;
 	PreparedStatement pstmt = null;
+	String userId;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		ObservableList<String> userId = getUserList();
+		ObservableList<String> userIdList = getUserList();
 
 		TableColumn<Grade, ?> tcMonth = tableView.getColumns().get(0);
 		tcMonth.setCellValueFactory(new PropertyValueFactory("month"));
@@ -59,32 +60,32 @@ public class AdminController implements Initializable {
 		TableColumn<Grade, ?> tcEnglish = tableView.getColumns().get(3);
 		tcEnglish.setCellValueFactory(new PropertyValueFactory("math"));
 
-		listView.setItems(userId);
+		listView.setItems(userIdList);
 		listView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
-				ObservableList<Grade> grade = getGradeList(listView.getSelectionModel().getSelectedItem().toString());
+				userId = listView.getSelectionModel().getSelectedItem().toString();
+				ObservableList<Grade> grade = getGradeList(userId);
+				System.out.println(userId);
 				tableView.setItems(grade);
-
 			}
 		});
+
+//		
 
 		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				buttonAddAction(event);
 
+				buttonAddAction(event);
 			}
 		});
 	}
 
 	// 수정버튼 눌렀을때.
 	public void buttonAddAction(ActionEvent ae) {
-
-		ObservableList<String> monthlist = null;
 
 		Stage addStage = new Stage(StageStyle.UTILITY);
 		addStage.initModality(Modality.WINDOW_MODAL);
@@ -96,41 +97,52 @@ public class AdminController implements Initializable {
 			addStage.setScene(scene);
 			addStage.setResizable(false);
 			addStage.show();
-			
-//			for(int i =0; i<12; i++) {
-//				if(tableView.getColumns().get(0).)
-//				monthlist.add(i+"월");
-//			}
+
 			ComboBox<String> comboMonth = (ComboBox) parent.lookup("#comboMonth");
-			comboMonth.setItems(monthlist);
-
+			Button btnFormAdd = (Button) parent.lookup("#btnFormAdd");
 			TextField txtKorean = (TextField) parent.lookup("#txtKorean");
-
 			TextField txtMath = (TextField) parent.lookup("#txtMath");
 			TextField txtEnglish = (TextField) parent.lookup("#txtEnglish");
 
-			Button btnFormAdd = (Button) parent.lookup("#btnFormAdd"); // fx:id말고 그냥 id로 선언되어있는 거 땡겨오는 법
+			ObservableList<String> monthlist = getUserMonthList(userId);
+			ObservableList<String> monthlist2 = FXCollections.observableArrayList();
+			System.out.println(monthlist.get(0).equals(1 + "월"));
+//			if (!monthlist.get(j).equals(i + "월")) {
+//				monthlist2.add(i+"월");
+//				System.out.println(monthlist2.get(0));
+
+			for (int i = 1; i <= 12; i++) {
+				for (int j = i - 1; j < monthlist.size(); j++) {
+					if (monthlist.get(j).equals(i + "월")) {
+						break;
+					} else {
+						monthlist2.add(i + "월");
+						System.out.println(monthlist2.get(0));
+						j--;
+						break;
+					}
+				}
+			}
+
+			comboMonth.setItems(monthlist2);
+
+			// 추가 버튼
+			btnFormAdd.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					updateGrade(listView.getSelectionModel().getSelectedItem().toString(),
+							comboMonth.getValue().toString(), txtKorean.getText(), txtMath.getText(),
+							txtEnglish.getText());
+					addStage.close();
+				}
+			});
+
 			Button btnFormCancel = (Button) parent.lookup("#btnFormCancel");
+			// 성적추가 화면의 취소버튼
 			btnFormCancel.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					System.out.println(comboMonth.getValue().toString());
-					System.out.println(tableView.getColumns().get(0).getText());
-					addStage.close();
-				}
-			} ); 
-			
-			
-			
-			btnFormAdd.setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent event) {
-					if (!comboMonth.getValue().toString().equals(tableView.getColumns().get(0).getText())) {
-						updateGrade(listView.getSelectionModel().getSelectedItem().toString(),
-								comboMonth.getValue().toString(), txtKorean.getText(), txtMath.getText(),
-								txtEnglish.getText());
-					}
 					addStage.close();
 				}
 			});
@@ -158,6 +170,7 @@ public class AdminController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+	
 
 	// 사용자별 성적표
 	public ObservableList<Grade> getGradeList(String id) {
@@ -179,7 +192,7 @@ public class AdminController implements Initializable {
 		}
 		return list;
 	}
-
+	
 	// connect
 	public Connection getConnect() {
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -212,6 +225,27 @@ public class AdminController implements Initializable {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	// 사용자의 month 목록
+	public ObservableList<String> getUserMonthList(String id) {
+		ObservableList<String> userMonthList = FXCollections.observableArrayList();
+		conn = getConnect();
+		String sql = "select month from grade where users=? order by 1";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			String userMonth;
+			while (rs.next()) {
+				userMonth = rs.getString("month");
+				userMonthList.add(userMonth);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return userMonthList;
 	}
 
 }
