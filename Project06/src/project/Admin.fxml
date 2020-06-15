@@ -37,9 +37,10 @@
       </VBox>
    </left>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="52.0" prefWidth="413.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="52.0" prefWidth="413.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnUpdate" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="추가" />
+            <Button fx:id="logoutBtn" text="이전" />
          </children>
       </HBox>
    </bottom>
