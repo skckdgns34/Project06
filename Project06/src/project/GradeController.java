@@ -37,6 +37,7 @@ public class GradeController implements Initializable {
 	Button cancelBtn, chartBtn;
 	Connection conn;
 	PreparedStatement pstmt = null;
+	
 	ObservableList<Grade> grade;
 	String id;
 
@@ -48,6 +49,7 @@ public class GradeController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
 		grade = getGradeList();
 
 		TableColumn<Grade, ?> tcMonth = tableView.getColumns().get(0);
@@ -83,6 +85,10 @@ public class GradeController implements Initializable {
 		});
 	}
 
+	
+	
+	
+	
 	// connect
 	public Connection getConnect() {
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";

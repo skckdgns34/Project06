@@ -46,19 +46,17 @@
 	<bottom>
 
 		<HBox alignment="CENTER" prefHeight="52.0" prefWidth="413.0"
-			style="-fx-background-color: #aaaaaa;" BorderPane.alignment="CENTER">
+			spacing="10.0" style="-fx-background-color: #aaaaaa;"
+			BorderPane.alignment="CENTER">
 
-				<children>
+			<children>
 
-					<Button fx:id="btnUpdate" alignment="CENTER"
-						contentDisplay="CENTER" mnemonicParsing="false"
-						style="-fx-background-color: #0066ff;" text="추가"
-						textFill="#171717" />
+				<Button fx:id="btnAdd" alignment="CENTER"
+					contentDisplay="CENTER" 
+					style="-fx-background-color: #0066ff;" text="추가" textFill="#171717" />
+				<Button fx:id="logoutBtn" text="이전" />
 
-
-					<Button fx:id="logoutBtn" text="이전" />
-
-				</children>
-			</HBox>
+			</children>
+		</HBox>
 	</bottom>
 </BorderPane>

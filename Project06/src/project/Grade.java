@@ -15,6 +15,11 @@ public class Grade {
 		this.english = new SimpleIntegerProperty(english);
 		this.math = new SimpleIntegerProperty(math);//
 	}
+	public Grade(int korean, int english, int math) {
+		this.korean = new SimpleIntegerProperty(korean);
+		this.english = new SimpleIntegerProperty(english);
+		this.math = new SimpleIntegerProperty(math);//
+	}
 	
 	public void setMonth(String month) {
 		this.month.set(month);

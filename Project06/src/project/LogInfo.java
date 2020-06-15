@@ -4,8 +4,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class LogInfo {
+	
 	private SimpleStringProperty id;
 	private SimpleStringProperty password;
+	
 	LogInfo(){
 		
 	}
@@ -16,8 +18,9 @@ public class LogInfo {
 		this.id = new SimpleStringProperty(id);
 		this.password = new SimpleStringProperty(password);
 	}
+
 	
-		//id
+	//id
 	public void setId(String id) {
 		this.id.set(id);
 	}
@@ -27,6 +30,7 @@ public class LogInfo {
 	public SimpleStringProperty idProperty() {
 		return this.id;
 	}
+	
 	//password
 	public void setPassword(String password) {
 		this.password.set(password);

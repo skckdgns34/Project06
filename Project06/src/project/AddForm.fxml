@@ -46,6 +46,7 @@
 			<children>
 				<Button id="btnFormAdd" style="-fx-background-color: #0066ff;" text="Save" />
 				<Button id="btnFormCancel" style="-fx-background-color: #0066ff;" text="Cancel" />
+				
 			</children>
 		</HBox>
 	</bottom>

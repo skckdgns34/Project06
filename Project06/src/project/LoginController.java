@@ -46,27 +46,23 @@ public class LoginController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		comboUser.setItems(FXCollections.observableArrayList("관리자", "사용자"));
-
+		
+	
 		// 로그인 버튼
 		btn1.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				// 관리자용 로그인
-
-
-				LogInfo logIn = getLoginList(txt1.getText(), txt2.getText());
-				System.out.println(logIn.getId());
+				
+				LogInfo logIn = getLoginList(txt1.getText(), txt2.getText(), comboUser.getValue().toString());
+				
 				if (comboUser.getValue().toString().equals("관리자") && logIn != null) {
 					// 관리자용 화면 추가
-
-
-				
-			
+					
 					Node node = (Node) event.getSource();
 					Stage stage = (Stage) node.getScene().getWindow();
 					stage.close();
-
 
 					try {
 						Parent parent = FXMLLoader.load(getClass().getResource("Admin.fxml"));
@@ -79,11 +75,6 @@ public class LoginController implements Initializable {
 						e.printStackTrace();
 					}
 				}
-
-
-				
-
-
 
 				// 사용자 로그인
 				else if (comboUser.getValue().toString().equals("사용자") && logIn != null) {
@@ -111,18 +102,17 @@ public class LoginController implements Initializable {
 
 			}
 
-
 		});
 
 		// 회원가입 버튼
 		btn2.setOnAction(new EventHandler<ActionEvent>() {
 
-	@Override
-	public void handle(ActionEvent event) {
-		SignupButtonAction(event);
-	}
+			@Override
+			public void handle(ActionEvent event) {
+				SignupButtonAction(event);
+			}
 
-	});
+		});
 
 	}// end of initialize
 
@@ -141,10 +131,16 @@ public class LoginController implements Initializable {
 	}
 
 	// 로그인
-	public LogInfo getLoginList(String id, String password) {
+	public LogInfo getLoginList(String id, String password, String user) {
 		LogInfo logInfo = null;
+		
 		conn = getConnect();
-		String sql = "select id, password from info where id=? and password = ?";
+		String sql = "";
+		if(user.equals("관리자")) {
+			sql = "select id, password from admin where id=? and password = ?";
+		}else if(user.equals("사용자")) {
+			sql = "select id, password from info where id=? and password = ?";
+		}
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -159,15 +155,15 @@ public class LoginController implements Initializable {
 	}
 
 	// 회원 가입
-	public void updateInfo(String name, String password) {
+	public void updateInfo(String id, String password) {
 		conn = getConnect();
 		String sql = "insert into info values(?, ?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
+			pstmt.setString(1, id);
 			pstmt.setString(2, password);
-
-			int r = pstmt.executeUpdate();
+			pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			// 이미 있는 아이디
 			System.out.println("이미 있는 아이디임");
@@ -207,6 +203,8 @@ public class LoginController implements Initializable {
 
 			Button signupBtn = (Button) parent.lookup("#signupbtn");
 			Button cancelBtn = (Button) parent.lookup("#cancelbtn");
+			
+			//취소버튼 눌렀을때
 			cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -230,8 +228,8 @@ public class LoginController implements Initializable {
 				@Override
 				public void handle(ActionEvent event) {
 					TextField txtSign = (TextField) parent.lookup("#txtsign");
-
 					PasswordField passwordField = (PasswordField) parent.lookup("#passwordfield");
+					
 					updateInfo(txtSign.getText(), passwordField.getText());
 					try {
 						Parent parent = FXMLLoader.load(getClass().getResource("LoginControl.fxml"));
