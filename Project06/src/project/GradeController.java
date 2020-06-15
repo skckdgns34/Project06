@@ -17,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
@@ -34,7 +35,7 @@ public class GradeController implements Initializable {
 	@FXML
 	TableView<Grade> tableView;
 	@FXML
-	Button cancelBtn, chartBtn;
+	Button cancelBtn, chartBtn, logoutBtn;
 	Connection conn;
 	PreparedStatement pstmt = null;
 	
@@ -82,6 +83,30 @@ public class GradeController implements Initializable {
 				grade = getGradeList();
 				tableView.setItems(grade);
 			}
+		});
+		
+		logoutBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Node node = (Node) event.getSource();
+				Stage stage = (Stage) node.getScene().getWindow();
+				stage.close();
+
+
+				try {
+					Parent parent = FXMLLoader.load(getClass().getResource("loginControl.fxml"));
+					Scene scene = new Scene(parent);
+					stage.setScene(scene);
+					stage.setResizable(false);
+					stage.show();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+			
 		});
 	}
 

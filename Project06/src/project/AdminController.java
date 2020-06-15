@@ -19,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -38,13 +39,17 @@ public class AdminController implements Initializable {
 	@FXML
 	TableView<Grade> tableView;
 	@FXML
-	Button btnUpdate, btnAdd;
+
+	Button logoutBtn, btnAdd;
+	
 	Connection conn;
 	PreparedStatement pstmt = null;
 	String userId;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+	
 
 		//사용자 id 목록
 		ObservableList<String> userIdList = getUserList();
@@ -90,7 +95,31 @@ public class AdminController implements Initializable {
 				buttonAddAction(event);
 			}
 		});
-	
+
+		
+		logoutBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Node node = (Node) event.getSource();
+				Stage stage = (Stage) node.getScene().getWindow();
+				stage.close();
+
+
+				try {
+					Parent parent = FXMLLoader.load(getClass().getResource("loginControl.fxml"));
+					Scene scene = new Scene(parent);
+					stage.setScene(scene);
+					stage.setResizable(false);
+					stage.show();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+			
+		});
 	}
 	
 	// 추가버튼 눌렀을때.
@@ -157,6 +186,7 @@ public class AdminController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	// 성적 추가
@@ -294,5 +324,8 @@ public class AdminController implements Initializable {
 			return grade;
 		}
 
+	
+	
+	
 
 }
