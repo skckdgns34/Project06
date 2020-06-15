@@ -11,7 +11,7 @@
 	style="-fx-background-color: #222222;"
 	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<Label layoutX="46.0" layoutY="138.0" text="이름"
+		<Label layoutX="46.0" layoutY="138.0" text="아이디"
 			textFill="#fffefe" />
 		<Label layoutX="46.0" layoutY="206.0" text="비밀번호"
 			textFill="#fcfafa" />
