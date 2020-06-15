@@ -8,39 +8,57 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.collections.FXCollections?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.AdminController">
-   <center>
-      <TableView fx:id="tableView" prefHeight="200.0" prefWidth="297.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn prefWidth="75.0" text="월" />
-          <TableColumn prefWidth="76.0" text="국어" />
-            <TableColumn prefWidth="82.0" text="영어" />
-            <TableColumn prefWidth="79.0" text="수학" />
-        </columns>
-      </TableView>
-   </center>
-   <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" prefHeight="26.0" prefWidth="100.0" style="-fx-background-color: #eeeeee;" text="사용자" textAlignment="CENTER" />
-            <ListView fx:id="listView" layoutX="181.0" layoutY="14.0" prefHeight="179.0" prefWidth="100.0">
-            <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="User 1" />
-                <String fx:value="User 2" />
-                <String fx:value="User 3" />
-                <String fx:value="User 4" />
-            </FXCollections>        
-          </items>
-      </ListView>
-         </children>
-      </VBox>
-   </left>
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="52.0" prefWidth="413.0" style="-fx-background-color: #aaaaaa;" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="btnUpdate" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #0066ff;" text="추가" textFill="#171717" />
-         </children>
-      </HBox>
-   </bottom>
+<BorderPane xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="project.AdminController">
+	<center>
+		<TableView fx:id="tableView" prefHeight="200.0"
+			prefWidth="297.0" BorderPane.alignment="CENTER">
+			<columns>
+				<TableColumn prefWidth="75.0" text="월" />
+				<TableColumn prefWidth="76.0" text="국어" />
+				<TableColumn prefWidth="82.0" text="영어" />
+				<TableColumn prefWidth="79.0" text="수학" />
+			</columns>
+		</TableView>
+	</center>
+	<left>
+		<VBox prefHeight="200.0" prefWidth="100.0"
+			BorderPane.alignment="CENTER">
+			<children>
+				<Label alignment="CENTER" prefHeight="26.0" prefWidth="100.0"
+					style="-fx-background-color: #eeeeee;" text="사용자"
+					textAlignment="CENTER" />
+				<ListView fx:id="listView" layoutX="181.0" layoutY="14.0"
+					prefHeight="179.0" prefWidth="100.0">
+					<items>
+						<FXCollections fx:factory="observableArrayList">
+							<String fx:value="User 1" />
+							<String fx:value="User 2" />
+							<String fx:value="User 3" />
+							<String fx:value="User 4" />
+						</FXCollections>
+					</items>
+				</ListView>
+			</children>
+		</VBox>
+	</left>
+	<bottom>
+
+		<HBox alignment="CENTER" prefHeight="52.0" prefWidth="413.0"
+			style="-fx-background-color: #aaaaaa;" BorderPane.alignment="CENTER">
+
+				<children>
+
+					<Button fx:id="btnUpdate" alignment="CENTER"
+						contentDisplay="CENTER" mnemonicParsing="false"
+						style="-fx-background-color: #0066ff;" text="추가"
+						textFill="#171717" />
+
+
+					<Button fx:id="logoutBtn" text="이전" />
+
+				</children>
+			</HBox>
+	</bottom>
 </BorderPane>

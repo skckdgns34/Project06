@@ -66,9 +66,7 @@ public class AdminController implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				userId = listView.getSelectionModel().getSelectedItem().toString();
-				ObservableList<Grade> grade = getGradeList(userId);
-				System.out.println(userId);
-				tableView.setItems(grade);
+				tableView.setItems(getGradeList(userId));
 			}
 		});
 
@@ -103,23 +101,18 @@ public class AdminController implements Initializable {
 			TextField txtKorean = (TextField) parent.lookup("#txtKorean");
 			TextField txtMath = (TextField) parent.lookup("#txtMath");
 			TextField txtEnglish = (TextField) parent.lookup("#txtEnglish");
-
-			ObservableList<String> monthlist = getUserMonthList(userId);
-			ObservableList<String> monthlist2 = FXCollections.observableArrayList();
-			System.out.println(monthlist.get(0).equals(1 + "월"));
-//			if (!monthlist.get(j).equals(i + "월")) {
-//				monthlist2.add(i+"월");
-//				System.out.println(monthlist2.get(0));
-
-			for (int i = 1; i <= 12; i++) {
-				for (int j = i - 1; j < monthlist.size(); j++) {
-					if (monthlist.get(j).equals(i + "월")) {
-						break;
-					} else {
-						monthlist2.add(i + "월");
-						System.out.println(monthlist2.get(0));
-						j--;
-						break;
+			
+			
+			//combo박스의 선택된 값
+//			System.out.println(comboMonth.getSelectionModel().getSelectedItem());
+			
+			ObservableList<String> monthlist = getUserMonthList(userId);	
+			ObservableList<String> monthlist2 = FXCollections.observableArrayList("1월", "2월", "3월", "4월", "5월", "6월",
+					"7월", "8월", "9월", "10월", "11월", "12월");
+			for (int i = 0; i < monthlist.size(); i++) {
+				for (int j = 0; j < monthlist2.size(); j++) {
+					if (monthlist.get(i).equals(monthlist2.get(j))) {
+						monthlist2.remove(j);
 					}
 				}
 			}
@@ -170,7 +163,6 @@ public class AdminController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
 
 	// 사용자별 성적표
 	public ObservableList<Grade> getGradeList(String id) {
@@ -192,7 +184,7 @@ public class AdminController implements Initializable {
 		}
 		return list;
 	}
-	
+
 	// connect
 	public Connection getConnect() {
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";

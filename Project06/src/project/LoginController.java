@@ -22,11 +22,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -40,10 +39,13 @@ public class LoginController implements Initializable {
 	Button btn1, btn2;
 	@FXML
 	Label user;
+	@FXML
+	ComboBox comboUser;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		LogInfo logIn = getLoginList(txt1.getText(), txt2.getText());
+
+		comboUser.setItems(FXCollections.observableArrayList("관리자", "사용자"));
 
 		// 로그인 버튼
 		btn1.setOnAction(new EventHandler<ActionEvent>() {
@@ -52,58 +54,64 @@ public class LoginController implements Initializable {
 			public void handle(ActionEvent event) {
 				// 관리자용 로그인
 
-					if (logIn = Admin) //어드민이 맞는지 아닌지 // 관리자용 화면 추가
-						{
-						alert()
-						} else {
-							alert()
-						}
-						Node node = (Node) event.getSource();
-						Stage stage = (Stage) node.getScene().getWindow();
-						stage.close();
 
-						try {
-							Parent parent = FXMLLoader.load(getClass().getResource("Admin.fxml"));
-							Scene scene = new Scene(parent);
-							stage.setScene(scene);
-							stage.setResizable(false);
-							stage.show();
-							break;
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+				LogInfo logIn = getLoginList(txt1.getText(), txt2.getText());
+				System.out.println(logIn.getId());
+				if (comboUser.getValue().toString().equals("관리자") && logIn != null) {
+					// 관리자용 화면 추가
+
+
+				
+			
+					Node node = (Node) event.getSource();
+					Stage stage = (Stage) node.getScene().getWindow();
+					stage.close();
+
+
+					try {
+						Parent parent = FXMLLoader.load(getClass().getResource("Admin.fxml"));
+						Scene scene = new Scene(parent);
+						stage.setScene(scene);
+						stage.setResizable(false);
+						stage.show();
+
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-
-					// 사용자 로그인
-					else if () {
-						//null이 아니면 
-						// 사용자용 화면 추가.
-						Node node = (Node) event.getSource();
-						Stage stage = (Stage) node.getScene().getWindow();
-						stage.close();
-						try {
-//							Parent parent = FXMLLoader.load(getClass().getResource("GradeControl.fxml"));
-							FXMLLoader loader = new FXMLLoader(getClass().getResource("GradeControl.fxml"));
-							Scene scene = new Scene(loader.load());
-							GradeController gradeController = loader.getController();
-							gradeController.setId(logIn.getId());
-							stage.setScene(scene);
-							stage.setResizable(false);
-							stage.show();
-							break;
-						} catch (IOException e) {
-
-							System.out.println("오류");
-							
-						}
-
-
-
-
-					} else if (logIn==null) {
-						messagePopup("아이디 확인.");
-					} 
 				}
+
+
+				
+
+
+
+				// 사용자 로그인
+				else if (comboUser.getValue().toString().equals("사용자") && logIn != null) {
+
+					// 사용자용 화면 추가.
+					Node node = (Node) event.getSource();
+					Stage stage = (Stage) node.getScene().getWindow();
+					stage.close();
+					try {
+//							Parent parent = FXMLLoader.load(getClass().getResource("GradeControl.fxml"));
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("GradeControl.fxml"));
+						Scene scene = new Scene(loader.load());
+						GradeController gradeController = loader.getController();
+						gradeController.setId(logIn.getId());
+						stage.setScene(scene);
+						stage.setResizable(false);
+						stage.show();
+
+					} catch (IOException e) {
+
+					}
+				} else if (logIn == null) {
+					messagePopup("아이디 확인.");
+				}
+
+			}
+
+
 		});
 
 		// 회원가입 버튼
@@ -145,7 +153,7 @@ public class LoginController implements Initializable {
 			if (rs.next())
 				logInfo = new LogInfo(rs.getString("id"), rs.getString("password"));
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("다시확인");
 		}
 		return logInfo;
 	}
