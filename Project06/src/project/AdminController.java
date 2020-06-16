@@ -40,7 +40,7 @@ public class AdminController implements Initializable {
 	TableView<Grade> tableView;
 	@FXML
 
-	Button logoutBtn, btnAdd;
+	Button logoutBtn, btnAdd, btnUpdate;
 	
 	Connection conn;
 	PreparedStatement pstmt = null;
@@ -95,7 +95,15 @@ public class AdminController implements Initializable {
 				buttonAddAction(event);
 			}
 		});
+		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent event) {
+				
+				
+				buttonUpdatgeAction(event);
+			}
+		});
 		
 		logoutBtn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -122,6 +130,78 @@ public class AdminController implements Initializable {
 		});
 	}
 	
+	
+	// 수정버튼 눌렀을떄
+	
+	public void buttonUpdatgeAction(ActionEvent ae) {
+
+		Stage addStage = new Stage(StageStyle.UTILITY);
+		addStage.initModality(Modality.WINDOW_MODAL);
+		addStage.initOwner(btnAdd.getScene().getWindow());
+
+		try {
+			Parent parent = FXMLLoader.load(getClass().getResource("AddForm.fxml"));
+			Scene scene = new Scene(parent);
+			addStage.setScene(scene);
+			addStage.setResizable(false);
+			addStage.show();
+
+			ComboBox<String> comboMonth = (ComboBox) parent.lookup("#comboMonth");
+			Button btnFormAdd = (Button) parent.lookup("#btnFormAdd");
+			Button btnFormCancel = (Button) parent.lookup("#btnFormCancel");
+			Button btnFormdelete = (Button) parent.lookup("#btnFormdelete");
+			btnFormdelete.setVisible(true);
+			TextField txtKorean = (TextField) parent.lookup("#txtKorean");
+			TextField txtMath = (TextField) parent.lookup("#txtMath");
+			TextField txtEnglish = (TextField) parent.lookup("#txtEnglish");
+			
+			comboMonth.setItems(getUserMonthList(userId));
+			//선택될때마다 값 바꿔서 보여주기
+			comboMonth.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+				
+				@Override
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				Grade updateGrade = getUserGradeList(listView.getSelectionModel().getSelectedItem().toString(), comboMonth.getValue().toString());
+					txtKorean.setText(String.format("%s",updateGrade.getKorean()));
+					txtMath.setText(String.format("%s",updateGrade.getMath()));
+					txtEnglish.setText(String.format("%s",updateGrade.getEnglish()));
+				}
+			});
+			// 삭제 버튼
+			btnFormdelete.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					deleteGrade(listView.getSelectionModel().getSelectedItem().toString(),comboMonth.getValue());
+					addStage.close();
+				}
+			});
+			// 추가 버튼
+			btnFormAdd.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					updateGrade(listView.getSelectionModel().getSelectedItem().toString(),
+							comboMonth.getValue().toString(), txtKorean.getText(), txtMath.getText(),
+							txtEnglish.getText());
+					
+					addStage.close();
+				}
+			});
+			
+			
+			// 성적추가 화면의 취소버튼
+			btnFormCancel.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					addStage.close();
+				}
+			});
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	// 추가버튼 눌렀을때.
 	public void buttonAddAction(ActionEvent ae) {
 
@@ -143,9 +223,6 @@ public class AdminController implements Initializable {
 			TextField txtMath = (TextField) parent.lookup("#txtMath");
 			TextField txtEnglish = (TextField) parent.lookup("#txtEnglish");
 			
-			
-			//combo박스의 선택된 값
-//			System.out.println(comboMonth.getSelectionModel().getSelectedItem());
 			
 			
 			//combo박스에 테이블뷰의 월들을 제외한 값들을 보여주기위한 내용들
@@ -202,7 +279,6 @@ public class AdminController implements Initializable {
 			pstmt.setString(5, math);
 
 			int r = pstmt.executeUpdate();
-			System.out.println(r + "건 변경됨");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -222,11 +298,26 @@ public class AdminController implements Initializable {
 			pstmt.setString(5, month);
 			
 			int r = pstmt.executeUpdate();
-			System.out.println(r + "건 변경됨");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	//성적 삭제.
+		public void deleteGrade(String id, String month) {
+			conn = getConnect();
+			String sql = "delete from grade where users = ? and month = ?";
+			
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, id);
+				pstmt.setString(2, month);
+				
+				int r = pstmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	
 	
 	
@@ -253,7 +344,7 @@ public class AdminController implements Initializable {
 
 	// connect
 	public Connection getConnect() {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String url = "jdbc:oracle:thin:@192.168.0.77:1521:xe";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, "hr", "hr");
@@ -315,8 +406,10 @@ public class AdminController implements Initializable {
 				pstmt.setString(1, id);
 				pstmt.setString(2, month);
 				ResultSet rs = pstmt.executeQuery();
-				grade = new Grade(rs.getInt("korean"), rs.getInt("english"),
-						rs.getInt("math"));
+				while (rs.next()) {
+				grade = new Grade(rs.getInt("korean"), rs.getInt("math"),
+						rs.getInt("english"));
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

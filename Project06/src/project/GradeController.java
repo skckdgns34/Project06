@@ -40,6 +40,7 @@ public class GradeController implements Initializable {
 	PreparedStatement pstmt = null;
 	
 	ObservableList<Grade> grade;
+	
 	String id;
 
 	public void setId(String id) {
@@ -76,8 +77,7 @@ public class GradeController implements Initializable {
 		});
 
 		
-		Platform.runLater(new Runnable() {
-			
+		Platform.runLater(new Runnable() {	
 			@Override
 			public void run() {
 				grade = getGradeList();
@@ -112,11 +112,9 @@ public class GradeController implements Initializable {
 
 	
 	
-	
-	
 	// connect
 	public Connection getConnect() {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String url = "jdbc:oracle:thin:@192.168.0.77:1521:xe";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, "hr", "hr");

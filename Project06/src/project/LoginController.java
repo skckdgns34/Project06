@@ -74,11 +74,13 @@ public class LoginController implements Initializable {
 					Stage stage = (Stage) node.getScene().getWindow();
 					stage.close();
 					try {
-//							Parent parent = FXMLLoader.load(getClass().getResource("GradeControl.fxml"));
+//						Parent parent = FXMLLoader.load(getClass().getResource("GradeControl.fxml"));
+						
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("GradeControl.fxml"));
 						Scene scene = new Scene(loader.load());
 						GradeController gradeController = loader.getController();
 						gradeController.setId(logIn.getId());
+						
 						stage.setScene(scene);
 						stage.setResizable(false);
 						stage.show();
@@ -102,7 +104,7 @@ public class LoginController implements Initializable {
 	
 	// connect
 	public Connection getConnect() {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String url = "jdbc:oracle:thin:@192.168.0.77:1521:xe";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, "hr", "hr");
@@ -133,7 +135,7 @@ public class LoginController implements Initializable {
 			if (rs.next())
 				logInfo = new LogInfo(rs.getString("id"), rs.getString("password"));
 		} catch (SQLException e) {
-			System.out.println("다시확인");
+			messagePopup("다시확인");
 		}
 		return logInfo;
 	}
@@ -149,8 +151,7 @@ public class LoginController implements Initializable {
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// 이미 있는 아이디
-			System.out.println("이미 있는 아이디임");
+			messagePopup("이미 있는 아이디임");
 		}
 	}
 
@@ -233,25 +234,24 @@ public class LoginController implements Initializable {
 	}
 
 	// 관리자용 화면 수정 버튼.
-	public void adminUpdate(String users, String month, int korean, int english, int math) {
+//	public void adminUpdate(String users, String month, int korean, int english, int math) {
+//
+//		conn = getConnect();
+//		String sql = "insert into info values(?, ?, ?, ?, ?)";
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, users);
+//			pstmt.setString(2, month);
+//			pstmt.setInt(3, korean);
+//			pstmt.setInt(4, english);
+//			pstmt.setInt(5, math);
+//
+//			int r = pstmt.executeUpdate();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-		conn = getConnect();
-		String sql = "insert into info values(?, ?, ?, ?, ?)";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, users);
-			pstmt.setString(2, month);
-			pstmt.setInt(3, korean);
-			pstmt.setInt(4, english);
-			pstmt.setInt(4, math);
-
-			int r = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// 사용자용 화면 chart 보여주기.
 
 	public void messagePopup(String message) {
 		// 컨테이너(HBox) 생성.

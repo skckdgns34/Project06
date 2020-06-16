@@ -28,7 +28,7 @@
 			<children>
 				<Button fx:id="chartBtn" contentDisplay="RIGHT"
 					prefHeight="23.0" prefWidth="42.0"
-					style="-fx-background-color: #0066FF;" text="차트" textFill="#141414"/>
+					 text="차트" textFill="#141414"/>
 				<Button fx:id="logoutBtn" text="이전" />
 			</children>
 		</HBox>

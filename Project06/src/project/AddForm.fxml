@@ -39,13 +39,15 @@
 		</GridPane>
 	</center>
 	<bottom>
-		<HBox alignment="CENTER" prefHeight="59.0" prefWidth="200.0" spacing="20" BorderPane.alignment="CENTER">
+		<HBox alignment="CENTER" prefHeight="59.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
 			<BorderPane.margin>
 				<Insets topRightBottomLeft="10" />
 			</BorderPane.margin>
 			<children>
-				<Button id="btnFormAdd" style="-fx-background-color: #0066ff;" text="Save" />
-				<Button id="btnFormCancel" style="-fx-background-color: #0066ff;" text="Cancel" />
+				<Button id="btnFormAdd"  text="Save" />
+				<Button id="btnFormdelete" text="delete" visible="false" />
+				<Button id="btnFormCancel" text="Cancel" />
+				
 				
 			</children>
 		</HBox>

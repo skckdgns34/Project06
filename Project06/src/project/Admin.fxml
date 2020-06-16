@@ -52,8 +52,9 @@
 			<children>
 
 				<Button fx:id="btnAdd" alignment="CENTER"
-					contentDisplay="CENTER" style="-fx-background-color: #0066ff;"
+					contentDisplay="CENTER" 
 					text="추가" textFill="#171717" />
+				<Button fx:id="btnUpdate" text="수정" />
 				<Button fx:id="logoutBtn" text="이전" />
 
 			</children>
